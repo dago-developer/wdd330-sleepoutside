@@ -1,4 +1,4 @@
-import { qs } from "./utils.mjs";
+const qs = (selector, parent = document) => parent.querySelector(selector);
 
 const categories = ["tents", "backpacks", "sleeping-bags"];
 

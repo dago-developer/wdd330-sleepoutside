@@ -1,8 +1,10 @@
 // Shared header search handler
-import { qs } from "./utils.mjs";
+function qs(selector, parent = document) {
+  return parent.querySelector(selector);
+}
 
 function initSearch() {
-const form = qs("#searchForm");
+  const form = qs("#searchForm");
   if (!form) return;
 
   const input = qs("#searchInput", form);
