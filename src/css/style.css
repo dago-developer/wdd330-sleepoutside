@@ -211,9 +211,27 @@ button {
   margin: 0.5em 0;
 }
 
+.product-card__discount {
+  position: absolute;
+  top: 0.5em;
+  left: 0.5em;
+  background-color: var(--tertiary-color);
+  color: white;
+  font-size: var(--small-font);
+  font-weight: bold;
+  padding: 0.2em 0.5em;
+  border-radius: 999px;
+  z-index: 2;
+}
+
+.product-card {
+  position: relative;
+}
+
 .card__brand {
   font-size: var(--small-font);
 }
+
 
 .card__name {
   font-size: 1em;

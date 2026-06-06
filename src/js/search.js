@@ -14,18 +14,46 @@ async function loadAllProducts() {
 }
 
 function renderProductList(products) {
-  const html = products.map(product => `
-    <li class="product-card">
-      <a href="product_pages/${getSlug(product.Id)}.html">
-        <img src="${product.Image}" alt="${product.Name}" />
-        <h3 class="card__brand">${product.Brand.Name}</h3>
-        <h2 class="card__name">${product.NameWithoutBrand}</h2>
-        <p class="product-card__price">$${product.FinalPrice}</p>
-      </a>
-    </li>
-  `).join("");
+  const html = products
+    .map(product => {
+      const isDiscounted =
+        typeof product.SuggestedRetailPrice === "number" &&
+        typeof product.FinalPrice === "number" &&
+        product.FinalPrice < product.SuggestedRetailPrice;
+
+      let discountPercent = 0;
+      if (isDiscounted) {
+        discountPercent =
+          ((product.SuggestedRetailPrice - product.FinalPrice) /
+            product.SuggestedRetailPrice) *
+          100;
+      }
+
+      const discountBadge = isDiscounted
+        ? `
+          <span class="product-card__discount">-${Math.round(
+            discountPercent
+          )}%</span>
+        `
+        : "";
+
+      return `
+        <li class="product-card">
+          <a href="product_pages/${getSlug(product.Id)}.html">
+            ${discountBadge}
+            <img src="${product.Image}" alt="${product.Name}" />
+            <h3 class="card__brand">${product.Brand.Name}</h3>
+            <h2 class="card__name">${product.NameWithoutBrand}</h2>
+            <p class="product-card__price">$${product.FinalPrice}</p>
+          </a>
+        </li>
+      `;
+    })
+    .join("");
+
   qs(".product-list").innerHTML = html;
 }
+
 
 function getSlug(id) {
 const slugs = {
