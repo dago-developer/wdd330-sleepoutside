@@ -4,14 +4,23 @@ const categories = ["tents", "backpacks", "sleeping-bags"];
 
 async function loadAllProducts() {
   const allProducts = [];
+
   for (const cat of categories) {
-    const response = await fetch(`/json/${cat}.json`);
+    const url = `/json/${cat}.json`;
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch ${url}. Status: ${response.status}`);
+    }
+
     const data = await response.json();
     const products = data.Result || data;
     allProducts.push(...products);
   }
+
   return allProducts;
 }
+
 
 function renderProductList(products) {
   const html = products
